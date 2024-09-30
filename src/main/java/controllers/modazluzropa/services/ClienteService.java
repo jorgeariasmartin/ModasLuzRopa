@@ -60,6 +60,10 @@ public class ClienteService {
         clienteRepository.deleteById(id);
     }
 
+    /**
+     * Elimina un cliente.
+     * @param cliente
+     */
     public void eliminar(Cliente cliente) {
         clienteRepository.delete(cliente);
     }
