@@ -15,13 +15,12 @@ public class ClienteService {
     private ClienteRepository clienteRepository;
 
     /**
-     * Devuelve los clientes que tengan ese nombre.
+     * De
      * @param nombre
      * @return
      */
     public List<Cliente> findClientebyNombre(String nombre) {
-        List<Cliente> clientes = clienteRepository.findClienteByNombre(nombre);
-        return clientes;
+        return clienteRepository.findClienteByNombre(nombre);
     }
 
     /**
