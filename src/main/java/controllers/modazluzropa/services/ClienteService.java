@@ -52,7 +52,7 @@ public class ClienteService {
 
 
     /**
-     * Elimina un cliente por id.
+     * Elimina un cliente por ID.
      * @param id
      */
     public void eliminar(Integer id) {
