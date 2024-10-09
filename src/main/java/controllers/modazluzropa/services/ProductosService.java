@@ -1,5 +1,6 @@
 package controllers.modazluzropa.services;
 
+import controllers.modazluzropa.dtos.ProductoDTO;
 import controllers.modazluzropa.models.Productos;
 import controllers.modazluzropa.repositories.ProductosRepository;
 import lombok.AllArgsConstructor;
@@ -32,19 +33,28 @@ public class ProductosService {
 
     /**
      * Crea o edita un producto.
-     * @param producto
+     * @param dto
      * @return
      */
-    public Productos guardar(Productos producto) {
-        return productosRepository.save(producto);
+    public Productos guardar(ProductoDTO dto) {
+        Productos productoGuardar = new Productos();
+        productoGuardar.setNombre(dto.getNombre());
+        productoGuardar.setColor(dto.getColor());
+
+        return productosRepository.save(productoGuardar);
     }
 
     /**
      * Elimina un producto por ID.
      * @param id
      */
-    public void eliminar(Integer id){
-        productosRepository.deleteById(id);
+    public String eliminar(Integer id){
+        try {
+            productosRepository.deleteById(id);
+            return "Producto eliminado";
+        } catch (Exception e) {
+            return "No se ha podido eliminar el producto";
+        }
     }
 
     /**

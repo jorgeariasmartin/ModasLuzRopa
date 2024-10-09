@@ -1,5 +1,6 @@
 package controllers.modazluzropa.services;
 
+import controllers.modazluzropa.dtos.VentaDTO;
 import controllers.modazluzropa.models.Ventas;
 import controllers.modazluzropa.repositories.VentasRepository;
 import lombok.AllArgsConstructor;
@@ -32,19 +33,28 @@ public class VentasService {
 
     /**
      * Crea o edita una venta.
-     * @param venta
+     * @param dto
      * @return
      */
-    public Ventas guardar(Ventas venta) {
-        return ventasRepository.save(venta);
+    public Ventas guardar(VentaDTO dto) {
+        Ventas ventaGuardar = new Ventas();
+
+        ventaGuardar.setCliente(dto.getCliente());
+        ventaGuardar.setFecha(dto.getFecha());
+        return ventasRepository.save(ventaGuardar);
     }
 
     /**
      * Elimina una venta por ID.
      * @param id
      */
-    public void eliminar(Integer id) {
-        ventasRepository.deleteById(id);
+    public String eliminar(Integer id) {
+        try {
+            ventasRepository.deleteById(id);
+            return "Venta eliminada";
+        } catch (Exception e){
+            return "No se ha podido eliminar la venta";
+        }
     }
 
     /**

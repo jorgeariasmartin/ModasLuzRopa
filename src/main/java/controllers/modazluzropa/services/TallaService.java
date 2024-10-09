@@ -1,5 +1,6 @@
 package controllers.modazluzropa.services;
 
+import controllers.modazluzropa.dtos.TallaDTO;
 import controllers.modazluzropa.models.Talla;
 import controllers.modazluzropa.repositories.TallaRepository;
 import lombok.AllArgsConstructor;
@@ -32,19 +33,28 @@ public class TallaService {
 
     /**
      * Crea o edita una talla.
-     * @param talla
+     * @param dto
      * @return
      */
-    public Talla guardar(Talla talla) {
-        return tallarepository.save(talla);
+    public Talla guardar(TallaDTO dto) {
+        Talla tallaGuardar = new Talla();
+        tallaGuardar.setTalla(dto.getTipoTalla());
+        tallaGuardar.setDescripcion(dto.getDescripcion());
+
+        return tallarepository.save(tallaGuardar);
     }
 
     /**
      * Elimina una talla por ID.
      * @param id
      */
-    public void eliminar(Integer id){
-        tallarepository.deleteById(id);
+    public String eliminar(Integer id){
+        try {
+            tallarepository.deleteById(id);
+            return "Talla eliminada";
+        } catch (Exception e){
+            return "No se ha podido eliminar la talla";
+        }
     }
 
     /**

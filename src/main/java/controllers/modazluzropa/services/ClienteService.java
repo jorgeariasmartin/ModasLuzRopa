@@ -1,6 +1,7 @@
 package controllers.modazluzropa.services;
 
 
+import controllers.modazluzropa.dtos.ClienteDTO;
 import controllers.modazluzropa.models.Cliente;
 import controllers.modazluzropa.repositories.ClienteRepository;
 import lombok.AllArgsConstructor;
@@ -42,12 +43,17 @@ public class ClienteService {
 
     /**
      * Crea o edita una empresa.
-     * @param c
+     * @param dto
      * @return
      */
 
-    public Cliente guardar(Cliente c) {
-        return clienteRepository.save(c);
+    public Cliente guardar(ClienteDTO dto) {
+        Cliente clienteGuardar = new Cliente();
+        clienteGuardar.setNombre(dto.getNombre());
+        clienteGuardar.setApellidos(dto.getApellidos());
+        clienteGuardar.setDni(dto.getDni());
+
+        return clienteRepository.save(clienteGuardar);
     }
 
 
@@ -55,8 +61,13 @@ public class ClienteService {
      * Elimina un cliente por ID.
      * @param id
      */
-    public void eliminar(Integer id) {
-        clienteRepository.deleteById(id);
+    public String eliminar(Integer id) {
+        try {
+            clienteRepository.deleteById(id);
+            return "Cliente eliminado";
+        } catch (Exception e){
+            return "No se ha podido eliminar el cliente";
+        }
     }
 
     /**
