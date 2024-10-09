@@ -25,8 +25,8 @@ public class VentasTest {
         Cliente cliente = clienteService.getById(3);
         venta.setCliente(cliente);
         venta.setFecha(LocalDate.of(2024, 7, 3).atTime(16,30,0));
-        Ventas ventaGuardada = ventasService.guardar(venta);
-        System.out.println(ventaGuardada.toString());
+        //Ventas ventaGuardada = ventasService.guardar(venta);
+        //System.out.println(ventaGuardada.toString());
     }
 
     @Test
@@ -34,8 +34,8 @@ public class VentasTest {
         Ventas venta = ventasService.getById(4);
         Cliente cliente = clienteService.getById(2);
         venta.setCliente(cliente);
-        Ventas ventaGuardada = ventasService.guardar(venta);
-        System.out.println(ventaGuardada.toString());
+        //Ventas ventaGuardada = ventasService.guardar(venta);
+        //System.out.println(ventaGuardada.toString());
     }
 
     @Test

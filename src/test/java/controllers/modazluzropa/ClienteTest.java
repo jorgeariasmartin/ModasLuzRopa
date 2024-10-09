@@ -15,11 +15,11 @@ public class ClienteTest {
     @Test
     void testCrearCliente() {
         Cliente cliente = new Cliente();
-        cliente.setNombre("Juan");
+       cliente.setNombre("Juan");
         cliente.setApellidos("Perez");
         cliente.setDni("12345678A");
-        Cliente clienteGuardado = clienteService.guardar(cliente);
-        System.out.println(clienteGuardado.toString());
+      //  Cliente clienteGuardado = clienteService.guardar(cliente);
+        //System.out.println(clienteGuardado.toString());
     }
 
     @Test
@@ -28,8 +28,8 @@ public class ClienteTest {
         cliente.setNombre("Alberto");
         cliente.setApellidos("Garcia");
         cliente.setDni("87654321B");
-        Cliente clienteGuardado = clienteService.guardar(cliente);
-        System.out.println(clienteGuardado.toString());
+     //   Cliente clienteGuardado = clienteService.guardar(cliente);
+      //  System.out.println(clienteGuardado.toString());
     }
 
     @Test

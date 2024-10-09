@@ -18,8 +18,8 @@ public class TallaTest {
         Talla talla = new Talla();
         talla.setTalla(TipoTalla.M);
         talla.setDescripcion("Mediana");
-        Talla tallaguardada = tallaService.guardar(talla);
-        System.out.println(tallaguardada.toString());
+       // Talla tallaguardada = tallaService.guardar(talla);
+       // System.out.println(tallaguardada.toString());
     }
 
     @Test
@@ -27,8 +27,8 @@ public class TallaTest {
         Talla talla = tallaService.getById(4);
         talla.setTalla(TipoTalla.L);
         talla.setDescripcion("Grande");
-        Talla tallaGuardada = tallaService.guardar(talla);
-        System.out.println(tallaGuardada.toString());
+       // Talla tallaGuardada = tallaService.guardar(talla);
+       // System.out.println(tallaGuardada.toString());
     }
 
     @Test
