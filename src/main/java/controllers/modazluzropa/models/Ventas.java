@@ -1,9 +1,11 @@
 package controllers.modazluzropa.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "ventas", schema = "modasluz", catalog = "postgres")
@@ -20,8 +22,12 @@ public class Ventas {
 
     @ManyToOne
     @JoinColumn(name = "id_cliente", nullable = false)
-    private Cliente Cliente;
+    private Cliente cliente;
 
     @Column(name = "fecha", nullable = false)
     private LocalDateTime fecha;
+
+    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<DetalleVenta> detallesVenta;
 }

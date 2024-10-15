@@ -1,5 +1,6 @@
 package controllers.modazluzropa.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +23,7 @@ public class DetalleVenta {
 
     @ManyToOne
     @JoinColumn(name = "id_venta", nullable = false)
+    @JsonBackReference
     private Ventas venta;
 
     @ManyToOne
