@@ -5,6 +5,7 @@ import controllers.modazluzropa.models.Ventas;
 import controllers.modazluzropa.services.VentasService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,5 +34,10 @@ public class VentasController {
     @DeleteMapping("/{id}")
     public String eliminar(@PathVariable Integer id){
         return ventasService.eliminar(id);
+    }
+
+    @GetMapping("/cliente/{id}")
+    public List<Ventas> getVentasByCliente(@PathVariable("id") int clienteId) {
+        return ventasService.getVentasByClienteId(clienteId);
     }
 }

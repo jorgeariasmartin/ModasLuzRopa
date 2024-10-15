@@ -1,9 +1,13 @@
 package controllers.modazluzropa.services;
 
 import controllers.modazluzropa.dtos.VentaDTO;
+import controllers.modazluzropa.models.Cliente;
 import controllers.modazluzropa.models.Ventas;
+import controllers.modazluzropa.repositories.ClienteRepository;
 import controllers.modazluzropa.repositories.VentasRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class VentasService {
 
+    private final ClienteRepository clienteRepository;
     private VentasRepository ventasRepository;
 
     /**
@@ -63,5 +68,9 @@ public class VentasService {
      */
     public void eliminar(Ventas venta) {
         ventasRepository.delete(venta);
+    }
+
+    public List<Ventas> getVentasByClienteId(int clienteId) {
+        return ventasRepository.findByClienteId(clienteId);
     }
 }
