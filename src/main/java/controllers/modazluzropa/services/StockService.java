@@ -1,8 +1,12 @@
 package controllers.modazluzropa.services;
 
+import controllers.modazluzropa.enumns.TipoTalla;
 import controllers.modazluzropa.models.Stock;
+import controllers.modazluzropa.models.Talla;
 import controllers.modazluzropa.repositories.StockRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,5 +58,25 @@ public class StockService {
      */
     public void eliminar(Stock stock){
         stockRepository.delete(stock);
+    }
+
+    /**
+     * Devuelve el catálogo de productos.
+     * @return List<Stock>
+     */
+    public List<Stock> getCatalogo(){
+        return stockRepository.findAll();
+    }
+
+    public ResponseEntity<?> consultarDisponibilidad(Integer idProducto, Talla talla) {
+        try {
+            Stock stock = stockRepository.findByProductoIdAndTalla(idProducto, talla);
+            if (stock == null) {
+                return new ResponseEntity<>("No hay productos disponibles", HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(stock, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error al consultar el producto", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
