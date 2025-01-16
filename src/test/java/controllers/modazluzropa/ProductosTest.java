@@ -1,43 +1,62 @@
 package controllers.modazluzropa;
 
 import controllers.modazluzropa.models.Productos;
+import controllers.modazluzropa.repositories.ProductosRepository;
 import controllers.modazluzropa.services.ProductosService;
+import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @SpringBootTest
+@AutoConfigureTestDatabase
+// @Transactional
 public class ProductosTest {
 
     @Autowired
-    private ProductosService productosService;
+    private ProductosService service;
 
-    @Test
-    void testCrearProducto() {
+    @Autowired
+    private ProductosRepository repository;
+
+    @BeforeEach
+    public void inicializarDatos(){
         Productos producto = new Productos();
-        producto.setNombre("Blusa");
+        producto.setNombre("Camisa");
         producto.setColor("FFFFFF");
-       // Productos productoGuardado = productosService.guardar(producto);
-        //System.out.println(productoGuardado.toString());
+        repository.save(producto);
+
+        Productos producto2 = new Productos();
+        producto2.setNombre("Pantalon");
+        producto2.setColor("FFFFFF");
+        repository.save(producto2);
+    }
+
+
+    @Test
+    void testFindAllPositivo() {
+
+        //GIVEN
+
+        //WHEN
+        List<Productos> productos = service.getAll();
+        //THEN
+        assertEquals(2, productos.size());
     }
 
     @Test
-    void editarProducto() {
-        Productos producto = productosService.getById(4);
-        producto.setColor("000000");
-       // Productos productoGuardado = productosService.guardar(producto);
-        //System.out.println(productoGuardado.toString());
-    }
+    void testFindAllNegativo() {
+        //GIVEN
+        repository.deleteAll();
 
-    @Test
-    void eliminarProducto() {
-        productosService.eliminar(4);
-    }
-
-    @Test
-    void buscarTodosProductos() {
-        for (Productos producto : productosService.getAll()) {
-            System.out.println(producto.toString());
-        }
+        //WHEN & THEN
+        NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> service.getAll());
+        assertEquals("No se han encontrado productos", exception.getMessage());
     }
 }

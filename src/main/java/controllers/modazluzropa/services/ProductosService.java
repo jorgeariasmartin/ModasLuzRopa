@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
@@ -15,11 +16,15 @@ public class ProductosService {
     private ProductosRepository productosRepository;
 
     /**
-     * Devuelve todos los productos.
+     * Devuelve todos los productos y si devuelve no encuentra nada tira una excepcion.
      * @return
      */
-    public List<Productos> getAll(){
-        return productosRepository.findAll();
+    public List<Productos> getAll() {
+        List<Productos> productos = productosRepository.findAll();
+        if (productos.isEmpty()) {
+            throw new NoSuchElementException("No se han encontrado productos");
+        }
+        return productos;
     }
 
     /**

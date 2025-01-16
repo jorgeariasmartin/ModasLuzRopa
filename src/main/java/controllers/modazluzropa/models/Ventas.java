@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "ventas", schema = "modasluz", catalog = "postgres")
+@Table(name = "ventas", schema = "modasluz")
 @Getter
 @Setter
 @AllArgsConstructor

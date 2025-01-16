@@ -26,9 +26,9 @@ public class VentasController {
         return ventasService.getById(id);
     }
 
-    @PostMapping
-    public Ventas guardar(@RequestBody VentaDTO venta){
-        return ventasService.guardar(venta);
+    @PostMapping("/guardar")
+    public Ventas guardar(@RequestBody VentaDTO ventaDTO) {
+        return ventasService.guardar(ventaDTO);
     }
 
     @DeleteMapping("/{id}")

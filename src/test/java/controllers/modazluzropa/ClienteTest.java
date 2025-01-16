@@ -1,46 +1,57 @@
 package controllers.modazluzropa;
 
 import controllers.modazluzropa.models.Cliente;
+import controllers.modazluzropa.repositories.ClienteRepository;
 import controllers.modazluzropa.services.ClienteService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.NoSuchElementException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 @SpringBootTest
+@AutoConfigureTestDatabase
 public class ClienteTest {
 
     @Autowired
-    private ClienteService clienteService;
+    private ClienteService service;
 
-    @Test
-    void testCrearCliente() {
+    @Autowired
+    private ClienteRepository repository;
+
+    @BeforeEach
+    public void inicializarDatos(){
         Cliente cliente = new Cliente();
-       cliente.setNombre("Juan");
-        cliente.setApellidos("Perez");
-        cliente.setDni("12345678A");
-      //  Cliente clienteGuardado = clienteService.guardar(cliente);
-        //System.out.println(clienteGuardado.toString());
+        cliente.setNombre("Juan");
+        cliente.setApellidos("Perez Gamero");
+        cliente.setDni("12345678H");
+        repository.save(cliente);
     }
 
     @Test
-    void editarCliente() {
-        Cliente cliente = clienteService.getById(4);
-        cliente.setNombre("Alberto");
-        cliente.setApellidos("Garcia");
-        cliente.setDni("87654321B");
-     //   Cliente clienteGuardado = clienteService.guardar(cliente);
-      //  System.out.println(clienteGuardado.toString());
+    void testEliminarClientePositivo() {
+        //GIVEN
+        Cliente cliente = repository.findById(1).get();
+
+        //WHEN
+        service.eliminar(cliente);
+
+        //THEN
+        assertEquals(0, repository.count());
     }
 
     @Test
-    void eliminarCLiente() {
-        clienteService.eliminar(4);
-    }
+    void testEliminarClienteNegativo() {
+        //GIVEN
 
-    @Test
-    void bucarTodosClientes() {
-        for (Cliente cliente : clienteService.getAll()) {
-            System.out.println(cliente.toString());
-        }
+        //WHEN & THEN
+        int idInexistente = 999;
+        NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> service.eliminar(idInexistente));
+        assertEquals("Cliente con ID " + idInexistente + " no encontrado", exception.getMessage());
     }
 }

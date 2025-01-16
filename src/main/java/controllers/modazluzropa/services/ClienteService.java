@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
@@ -59,14 +60,15 @@ public class ClienteService {
 
     /**
      * Elimina un cliente por ID.
-     * @param id
+     *
+     * @param id ID del cliente.
+     * @throws NoSuchElementException si el cliente no existe.
      */
-    public String eliminar(Integer id) {
-        try {
+    public void eliminar(Integer id) {
+        if (clienteRepository.existsById(id)) {
             clienteRepository.deleteById(id);
-            return "Cliente eliminado";
-        } catch (Exception e){
-            return "No se ha podido eliminar el cliente";
+        } else {
+            throw new NoSuchElementException("Cliente con ID " + id + " no encontrado");
         }
     }
 

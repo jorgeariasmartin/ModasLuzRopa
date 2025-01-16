@@ -1,14 +1,12 @@
 package controllers.modazluzropa.controlers;
 
+import controllers.modazluzropa.dtos.StockDTO;
 import controllers.modazluzropa.models.Stock;
 import controllers.modazluzropa.models.Talla;
 import controllers.modazluzropa.services.StockService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +24,10 @@ public class StockController {
     @GetMapping("/disponibilidad")
     public ResponseEntity<?> consultarDisponibilidad(@RequestParam Integer idProducto, @RequestParam Talla talla) {
         return stockService.consultarDisponibilidad(idProducto, talla);
+    }
+
+    @PostMapping("/modificar")
+    public ResponseEntity<?> modificarStock(@RequestBody StockDTO stockDTO) {
+        return stockService.modificarStock(stockDTO);
     }
 }

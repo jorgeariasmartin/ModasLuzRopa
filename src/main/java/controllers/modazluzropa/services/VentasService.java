@@ -1,16 +1,20 @@
 package controllers.modazluzropa.services;
 
 import controllers.modazluzropa.dtos.VentaDTO;
-import controllers.modazluzropa.models.Cliente;
-import controllers.modazluzropa.models.Ventas;
+import controllers.modazluzropa.models.*;
 import controllers.modazluzropa.repositories.ClienteRepository;
+import controllers.modazluzropa.repositories.ProductosRepository;
+import controllers.modazluzropa.repositories.TallaRepository;
 import controllers.modazluzropa.repositories.VentasRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -18,6 +22,8 @@ public class VentasService {
 
     private final ClienteRepository clienteRepository;
     private VentasRepository ventasRepository;
+    private ProductosRepository productoRepository;
+    private TallaRepository tallaRepository;
 
     /**
      * Devuelve todas las ventas.
@@ -41,12 +47,42 @@ public class VentasService {
      * @param dto
      * @return
      */
+    @Transactional
     public Ventas guardar(VentaDTO dto) {
-        Ventas ventaGuardar = new Ventas();
+        // Buscar el cliente
+        Cliente cliente = clienteRepository.findById(dto.getClienteId())
+                .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
 
-        ventaGuardar.setCliente(dto.getCliente());
-        ventaGuardar.setFecha(dto.getFecha());
-        return ventasRepository.save(ventaGuardar);
+        // Crear una nueva venta
+        Ventas venta = new Ventas();
+        venta.setCliente(cliente);
+        venta.setFecha(LocalDateTime.now());
+
+        // Crear los detalles de la venta
+        List<DetalleVenta> detallesVenta = dto.getDetallesVenta().stream().map(detalleDTO -> {
+            DetalleVenta detalleVenta = new DetalleVenta();
+
+            // Buscar el producto y la talla
+            Productos producto = productoRepository.findById(detalleDTO.getProductoId())
+                    .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+            Talla talla = tallaRepository.findById(detalleDTO.getTallaId())
+                    .orElseThrow(() -> new RuntimeException("Talla no encontrada"));
+
+            // Setear los valores del detalle de la venta
+            detalleVenta.setProducto(producto);
+            detalleVenta.setTalla(talla);
+            detalleVenta.setCantidadVendida(detalleDTO.getCantidadVendida());
+            detalleVenta.setPrecioUnitario(detalleDTO.getPrecioUnitario());
+            detalleVenta.setVenta(venta);
+
+            return detalleVenta;
+        }).collect(Collectors.toList());
+
+        venta.setDetallesVenta(detallesVenta);
+
+        // Guardar la venta con los detalles
+        return ventasRepository.save(venta);
     }
 
     /**

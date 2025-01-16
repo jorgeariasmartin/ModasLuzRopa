@@ -30,8 +30,8 @@ public class ClienteController {
         return clienteService.guardar(cliente);
     }
 
-    @DeleteMapping("/{id}")
-    public String eliminar(@PathVariable Integer id) {
-        return clienteService.eliminar(id);
-    }
+   // @DeleteMapping("/{id}")
+ //   public String eliminar(@PathVariable Integer id) {
+    //    return clienteService.eliminar(id);
+  //  }
 }
