@@ -16,7 +16,7 @@ import java.util.NoSuchElementException;
 
 @SpringBootTest
 @AutoConfigureTestDatabase
-// @Transactional
+@Transactional
 public class ProductosTest {
 
     @Autowired
@@ -49,6 +49,23 @@ public class ProductosTest {
         //THEN
         assertEquals(2, productos.size());
     }
+
+    @Test
+    void testBuscarProductoPorNombrePositivo() {
+        // GIVEN
+        String nombreProducto = "Camisa";
+
+        // WHEN
+        Productos productoEncontrado = repository.findByNombre(nombreProducto).orElseThrow(() ->
+                new NoSuchElementException("Producto con nombre " + nombreProducto + " no encontrado")
+        );
+
+        // THEN
+        assertNotNull(productoEncontrado); // Verificamos que el producto no sea nulo
+        assertEquals(nombreProducto, productoEncontrado.getNombre()); // Validamos que el nombre sea correcto
+        assertEquals("FFFFFF", productoEncontrado.getColor()); // Validamos el color del producto
+    }
+
 
     @Test
     void testFindAllNegativo() {

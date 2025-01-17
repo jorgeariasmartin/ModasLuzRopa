@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -69,6 +70,11 @@ public class VentasService {
             Talla talla = tallaRepository.findById(detalleDTO.getTallaId())
                     .orElseThrow(() -> new RuntimeException("Talla no encontrada"));
 
+            // Validar que la cantidad vendida no sea negativa
+            if (detalleDTO.getCantidadVendida() <= 0) {
+                throw new RuntimeException("La cantidad vendida debe ser mayor a 0");
+            }
+
             // Setear los valores del detalle de la venta
             detalleVenta.setProducto(producto);
             detalleVenta.setTalla(talla);
@@ -84,6 +90,7 @@ public class VentasService {
         // Guardar la venta con los detalles
         return ventasRepository.save(venta);
     }
+
 
     /**
      * Elimina una venta por ID.
@@ -107,6 +114,10 @@ public class VentasService {
     }
 
     public List<Ventas> getVentasByClienteId(int clienteId) {
-        return ventasRepository.findByClienteId(clienteId);
+        if (clienteRepository.existsById(clienteId)) {
+            return ventasRepository.findByClienteId(clienteId);
+        } else {
+            throw new NoSuchElementException("Cliente con ID " + clienteId + " no encontrado");
+        }
     }
 }
